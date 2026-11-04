@@ -12,7 +12,6 @@ export async function exportContacts(repository: ContactRepository): Promise<Buf
     { header: 'ID', key: 'id', width: 10 },
     { header: 'Имя', key: 'name', width: 30 },
     { header: 'Телефон', key: 'phone', width: 20 },
-    { header: 'Откуда', key: 'from', width: 30 },
     { header: 'Дата создания', key: 'createdAt', width: 24 },
   ];
 
@@ -30,7 +29,6 @@ export async function exportContacts(repository: ContactRepository): Promise<Buf
         id: contact.id,
         name: contact.name,
         phone: contact.phone,
-        from: contact.from ?? '',
         createdAt: contact.createdAt.toLocaleString('ru-RU', { timeZone: 'Asia/Yekaterinburg' }),
       });
       afterId = contact.id;

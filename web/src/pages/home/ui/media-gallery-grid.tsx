@@ -16,6 +16,15 @@ interface MediaGalleryGridProps {
   mediaItems: MediaItem[];
 }
 
+const imageSizes = [
+  '(min-width: 1536px) 356px',
+  '(min-width: 1280px) 292px',
+  '(min-width: 1024px) 228px',
+  '(min-width: 768px) 235px',
+  '(min-width: 640px) 296px',
+  'calc(50vw - 24px)',
+].join(', ');
+
 const MediaGalleryGrid = ({ mediaItems }: MediaGalleryGridProps) => {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -30,7 +39,7 @@ const MediaGalleryGrid = ({ mediaItems }: MediaGalleryGridProps) => {
             key={item.src}
             type={'button'}
             className={[
-              'group aspect-square cursor-pointer overflow-hidden rounded-lg shadow-soft',
+              'group relative aspect-square cursor-pointer overflow-hidden rounded-lg shadow-soft',
               'transition-all duration-300 hover:shadow-medium focus-visible:outline-2',
               'focus-visible:outline-offset-2 focus-visible:outline-primary',
             ].join(' ')}
@@ -40,8 +49,8 @@ const MediaGalleryGrid = ({ mediaItems }: MediaGalleryGridProps) => {
             <Image
               src={item.src}
               alt={item.alt}
-              width={300}
-              height={300}
+              fill={true}
+              sizes={imageSizes}
               className={'h-full w-full object-cover transition-transform duration-300 group-hover:scale-110'}
             />
           </button>

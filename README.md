@@ -30,10 +30,13 @@ npm install --global pnpm@12.16.1
 pnpm install --frozen-lockfile
 cp api/.env.example api/.env
 cp web/.env.example web/.env.local
-pnpm run db:up
-pnpm run db:migrate
+pnpm run db:setup
 pnpm run dev
 ```
+
+`db:setup` запускает PostgreSQL через Compose и применяет миграции.
+В `api/.env` используйте порт `55439`, как в `api/.env.example`.
+При изменении порта следуйте [руководству по конфигурации](docs/guides/api-configuration.md#api).
 
 Сайт: [localhost:3000](http://localhost:3000) · API: [localhost:5000](http://localhost:5000) · Swagger: [документация API](http://localhost:5000/documentation).
 

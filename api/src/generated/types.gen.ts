@@ -7,14 +7,12 @@ export type ClientOptions = {
 export type CreateContact = {
     name: string;
     phone: string;
-    from?: string;
 };
 
 export type Contact = {
     id: number;
     name: string;
     phone: string;
-    from: string | null;
     createdAt: string;
 };
 

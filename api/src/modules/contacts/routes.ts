@@ -18,7 +18,6 @@ export function registerContactRoutes(app: FastifyInstance, repository: ContactR
     const contact = await repository.create({
       name: body.name.trim(),
       phone: body.phone.trim(),
-      ...(body.from !== undefined ? { from: body.from.trim() } : {}),
     });
     return reply.code(201).send(toContact(contact));
   };

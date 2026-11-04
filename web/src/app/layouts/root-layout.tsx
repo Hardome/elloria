@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond as Cormorant } from 'next/font/google';
 import localFont from 'next/font/local';
 
+import { COMPANY } from '@/entities/company';
+import { createSocialMetadata } from '@/shared/config';
 import Footer from '@/widgets/footer';
 import Header from '@/widgets/header';
 
@@ -54,28 +56,23 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://elloria.ru',
   },
-  openGraph: {
-    title: 'ELLORIA — Жилой посёлок в Тюмени',
-    description: 'ELLORIA — посёлок с уникальной архитектурой и инфраструктурой для комфортного проживания',
-    url: 'https://elloria.ru',
-    siteName: 'ELLORIA',
-    images: [
-      {
-        url: 'https://elloria.ru/topPerspective3.webp',
-        width: 1200,
-        height: 630,
-        alt: 'ELLORIA — вид сверху',
-      },
-    ],
-    locale: 'ru_RU',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'ELLORIA — Жилой посёлок в Тюмени',
-    description: 'ELLORIA — посёлок с уникальной архитектурой и инфраструктурой для комфортного проживания',
-    images: ['https://elloria.ru/topPerspective3.webp'],
-  },
+  ...createSocialMetadata(
+    'ELLORIA — Жилой посёлок в Тюмени',
+    'ELLORIA — посёлок с уникальной архитектурой и инфраструктурой для комфортного проживания',
+    'https://elloria.ru',
+  ),
+};
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://elloria.ru/#organization',
+  name: COMPANY.name,
+  url: 'https://elloria.ru',
+  taxID: COMPANY.inn,
+  address: COMPANY.address,
+  telephone: COMPANY.phone,
+  email: COMPANY.email,
 };
 
 export default function RootLayout({
@@ -86,6 +83,7 @@ export default function RootLayout({
   return (
     <html lang={'ru'}>
       <body className={`${cormorant.variable} ${houschkaPro.variable} antialiased`}>
+        <script type={'application/ld+json'}>{JSON.stringify(organization).replace(/</g, '\\u003c')}</script>
         <Header />
         {children}
         <Footer />

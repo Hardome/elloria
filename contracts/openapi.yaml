@@ -134,12 +134,9 @@ components:
           type: string
           maxLength: 255
           pattern: '^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$'
-        from:
-          type: string
-          maxLength: 255
     Contact:
       type: object
-      required: [ id, name, phone, from, createdAt ]
+      required: [ id, name, phone, createdAt ]
       properties:
         id:
           type: integer
@@ -149,8 +146,6 @@ components:
           type: string
         phone:
           type: string
-        from:
-          type: [ string, "null" ]
         createdAt:
           type: string
           format: date-time

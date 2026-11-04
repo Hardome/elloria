@@ -33,7 +33,7 @@ export function registerHealth(app: FastifyInstance, environment: Environment): 
     },
     async (_request, reply) => {
       try {
-        await app.db.execute(sql`select id, name, phone, "from", created_at, updated_at from contacts limit 0`);
+        await app.db.execute(sql`select id, name, phone, created_at, updated_at from contacts limit 0`);
         return reply.code(200).send({ status: 'ready' });
       } catch {
         return reply.code(503).send({ status: 'not_ready' });

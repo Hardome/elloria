@@ -2,11 +2,17 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { COMPANY } from '@/entities/company';
+import { createSocialMetadata } from '@/shared/config';
+
+const title = 'Политика обработки персональных данных | ELLORIA';
+const description = 'Как ООО «Архитектор» обрабатывает персональные данные посетителей сайта ELLORIA.';
+const url = 'https://elloria.ru/privacy';
 
 export const metadata: Metadata = {
-  title: 'Политика обработки персональных данных | ELLORIA',
-  description: 'Как ООО «Архитектор» обрабатывает персональные данные посетителей сайта ELLORIA.',
-  alternates: { canonical: 'https://elloria.ru/privacy' },
+  title,
+  description,
+  alternates: { canonical: url },
+  ...createSocialMetadata(title, description, url),
 };
 
 export default function PrivacyPage() {

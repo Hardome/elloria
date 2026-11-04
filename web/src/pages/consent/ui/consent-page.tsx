@@ -2,11 +2,17 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { COMPANY } from '@/entities/company';
+import { createSocialMetadata } from '@/shared/config';
+
+const title = 'Согласие на обработку персональных данных | ELLORIA';
+const description = 'Условия согласия на обработку имени и номера телефона при отправке заявки на сайте ELLORIA.';
+const url = 'https://elloria.ru/consent';
 
 export const metadata: Metadata = {
-  title: 'Согласие на обработку персональных данных | ELLORIA',
-  description: 'Условия согласия на обработку имени и номера телефона при отправке заявки на сайте ELLORIA.',
-  alternates: { canonical: 'https://elloria.ru/consent' },
+  title,
+  description,
+  alternates: { canonical: url },
+  ...createSocialMetadata(title, description, url),
 };
 
 export default function ConsentPage() {
