@@ -1,87 +1,43 @@
-import {defineConfig} from "eslint/config";
-
-import {
-    fixupConfigRules,
-    fixupPluginRules,
-} from "@eslint/compat";
-
-import tsParser from "@typescript-eslint/parser";
-import globals from "globals";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import reactHooks from "eslint-plugin-react-hooks";
-import react from "eslint-plugin-react";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-import js from "@eslint/js";
-
+import {defineConfig, globalIgnores} from 'eslint/config';
+import js from '@eslint/js';
 import nextPlugin from '@next/eslint-plugin-next';
-
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-import {
-    FlatCompat,
-} from "@eslint/eslintrc";
-
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
 
 export default defineConfig([
-    nextPlugin.configs.recommended,
-    nextPlugin.configs['core-web-vitals'],
-    {
-    extends: fixupConfigRules(compat.extends(
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:@typescript-eslint/strict",
-        "plugin:@typescript-eslint/stylistic-type-checked"
-    )),
-
+  globalIgnores(['.next/**', 'node_modules/**', 'out/**', 'coverage/**', 'next-env.d.ts']),
+  {
+    files: ['**/*.mjs'],
+    extends: [js.configs.recommended],
+    languageOptions: {globals: globals.node}
+  },
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      react.configs.flat.recommended,
+      react.configs.flat['jsx-runtime'],
+      reactHooks.configs.flat.recommended,
+      typescriptEslint.configs['flat/strict'],
+      typescriptEslint.configs['flat/stylistic-type-checked'],
+      nextPlugin.configs['core-web-vitals']
+    ],
     languageOptions: {
-        globals: {
-            ...globals.browser,
-            ...globals.node,
-            ...globals.jest,
-            "describe": true,
-            "it": true,
-            "expect": true,
-            "jest": true,
-        },
-
-        parser: tsParser,
-        "sourceType": "module",
-        "ecmaVersion": 2021,
-
-        parserOptions: {
-            "tsconfigRootDir": __dirname,
-            "project": ["./tsconfig.json"],
-
-            "ecmaFeatures": {
-                "jsx": true,
-                "impliedStrict": true,
-            },
-        },
+      globals: {...globals.browser, ...globals.node},
+      parser: tsParser,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
     },
-
-    plugins: {
-        "@typescript-eslint": fixupPluginRules(typescriptEslint),
-        "react-hooks": fixupPluginRules(reactHooks),
-        react: fixupPluginRules(react),
-        "simple-import-sort": simpleImportSort,
-    },
-
-    settings: {
-        "react": {
-            "version": "detect",
-        },
-    },
-
+    plugins: {'simple-import-sort': simpleImportSort},
+    settings: {react: {version: 'detect'}},
     rules: {
         "no-console": 2,
         "rest-spread-spacing": [2, "never"],

@@ -6,12 +6,12 @@ Next.js 16, React 19, TypeScript и Tailwind CSS. Приложение соде�
 
 ## Разработка
 
-Используйте Node.js 24.19+ и pnpm 12.6.0. Установка выполняется из корня монорепозитория:
+Используйте Node.js 26.13.0 LTS и pnpm 12.16.1. Установка выполняется из корня монорепозитория:
 
 ```sh
-corepack pnpm install --frozen-lockfile
+pnpm install --frozen-lockfile
 cp web/.env.example web/.env.local
-corepack pnpm run dev
+pnpm run dev
 ```
 
 API и PostgreSQL должны быть подготовлены по [корневой инструкции](../README.md).
@@ -24,10 +24,9 @@ API и PostgreSQL должны быть подготовлены по [корн�
 Из корня проекта:
 
 ```sh
-corepack pnpm --filter @elloria/web run lint
-corepack pnpm --filter @elloria/web run typecheck
-corepack pnpm --filter @elloria/web run build
+pnpm --filter @elloria/web run lint
+pnpm --filter @elloria/web run typecheck
+pnpm --filter @elloria/web run build
 ```
 
-Общая проверка приложения: `corepack pnpm run check`.
-Production-конфигурация и эксплуатация ведутся в отдельном приватном репозитории.
+Общая проверка приложения: `pnpm run check`.

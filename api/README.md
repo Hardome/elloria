@@ -1,8 +1,8 @@
 # ELLORIA API
 
-Fastify, TypeScript, PostgreSQL 16, Drizzle ORM и Zod.
+Fastify, TypeScript, PostgreSQL 18.6, Drizzle ORM и Zod.
 API разделён на инфраструктурные плагины, маршруты и репозитории предметных модулей.
-Нужны Node.js 24.19+ и pnpm 12.6.0.
+Нужны Node.js 26.13.0 LTS и pnpm 12.16.1.
 
 ## Разработка
 
@@ -10,10 +10,10 @@ API разделён на инфраструктурные плагины, ма�
 
 ```sh
 cp .env.example .env
-corepack pnpm install --frozen-lockfile
-corepack pnpm run codegen
-corepack pnpm run db:migrate
-corepack pnpm run dev
+pnpm install --frozen-lockfile
+pnpm run codegen
+pnpm run db:migrate
+pnpm run dev
 ```
 
 Перед запуском настройте `DATABASE_URL` и `EXPORT_KEY` в `.env`.
@@ -22,6 +22,26 @@ corepack pnpm run dev
 Swagger UI в development доступен на `http://localhost:5000/documentation`.
 В production документация отключена.
 Запуск всего приложения описан в [корневом README](../README.md).
+
+## Запуск в Docker
+
+Из корня репозитория:
+
+```sh
+docker compose --profile app up -d --build
+```
+
+Compose ждёт PostgreSQL, применяет миграции и запускает API и web.
+Сайт доступен на `http://localhost:3000`, API — на `http://localhost:5000`.
+Реквизиты БД и ключ выгрузки в Compose предназначены только для локального запуска.
+При обновлении существующего окружения после изменения схемы сначала выполните
+`docker compose --profile app run --rm migrate`, затем обновите контейнеры командой выше.
+Остановка: `docker compose --profile app down`.
+
+PostgreSQL доступен на `127.0.0.1:55439`; порт можно изменить через `DATABASE_PORT`.
+В этом случае обновите порт и в `DATABASE_URL` локального `.env`.
+Для PostgreSQL 18 используется новый том `postgres18_data` с пустой БД.
+Прежний том PostgreSQL 16 автоматически не подключается и не удаляется.
 
 ## Структура
 
@@ -83,33 +103,33 @@ Health-маршруты исключены из ограничения част�
 ## Миграции
 
 ```sh
-corepack pnpm run db:generate
-corepack pnpm run db:migrate
-corepack pnpm run db:studio
+pnpm run db:generate
+pnpm run db:migrate
+pnpm run db:studio
 ```
 
 После изменения схемы сгенерируйте миграцию и проверьте SQL до применения.
-Не редактируйте применённые миграции. В production-образе используется `pnpm run db:migrate:prod`.
+Не редактируйте применённые миграции. В production-образе используется `node dist/commands/migrate.js`.
 Повторный запуск применяет только новые миграции.
 Начальная миграция рассчитана на пустую БД. Старые данные Knex не переносятся.
 
 ## Проверки
 
 ```sh
-corepack pnpm run check
+pnpm run check
 ```
 
 `check` запускает генерацию, Biome, cspell, Knip, проверку типов, Vitest и сборку.
 `lint` не исправляет исходники; для исправлений есть `lint:fix`.
 Доступны отдельные команды `typecheck`, `spellcheck`, `lint:knip`, `test`, `test:watch`, `build`.
 
-Для тестов нужен PostgreSQL 16 и пользователь с правом создавать и удалять БД.
+Для тестов нужен PostgreSQL 18.6 и пользователь с правом создавать и удалять БД.
 Vitest создаёт отдельную временную БД, применяет миграции и удаляет её после тестов.
 Рабочая таблица заявок не очищается. Например, для выделенного тестового PostgreSQL:
 
 ```sh
-docker run --name elloria-api-tests -d -p 127.0.0.1:55439:5432 -e POSTGRES_PASSWORD=elloria-tests-only -e POSTGRES_DB=elloria_tests_admin postgres:16-alpine
+docker run --name elloria-api-tests -d -p 127.0.0.1:55440:5432 -e POSTGRES_PASSWORD=elloria-tests-only -e POSTGRES_DB=elloria_tests_admin postgres:18.6-alpine
 ```
 
-Задайте `TEST_DATABASE_URL=postgresql://postgres:elloria-tests-only@127.0.0.1:55439/elloria_tests_admin`
+Задайте `TEST_DATABASE_URL=postgresql://postgres:elloria-tests-only@127.0.0.1:55440/elloria_tests_admin`
 в окружении или локальном `.env`, затем запустите `check`.
