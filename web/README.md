@@ -17,7 +17,13 @@ pnpm run dev
 API и PostgreSQL должны быть подготовлены по [корневой инструкции](../README.md).
 Сайт доступен на `http://localhost:3000`.
 Браузер отправляет `POST /api/contacts`; Next.js проксирует запросы в API.
-Для локального запуска адрес задаётся через `BACKEND_INTERNAL_URL` в `web/.env.local`.
+Настройка адресов описана в [руководстве конфигурации](../docs/guides/api-configuration.md#web-и-прокси).
+
+## Правила разработки
+
+- [Структура Next.js, компоненты, формы и запросы](../docs/rules/web-guidelines.md).
+- [Токены, типографика, общие UI-компоненты и доступность](../docs/rules/design-system.md).
+- [Ручной регресс сайта и формы заявки](../docs/guides/regression.md).
 
 ## Проверки
 
