@@ -1,71 +1,52 @@
 # ELLORIA
 
-Сайт жилого посёлка с каталогом домов, медиагалереей и формой обратной связи.
-Монорепозиторий объединяет Next.js-приложение, Fastify API и общий HTTP-контракт.
+Сайт жилого посёлка в Тюмени: каталог домов, медиагалерея и форма обратной связи.
+Монорепозиторий объединяет веб-приложение, API для обработки заявок и общий HTTP-контракт.
 
-## Состав
+[Открыть сайт →](https://elloria.ru)
 
-| Каталог | Назначение |
+## Возможности
+
+- Каталог проектов домов с фотографиями и визуализациями.
+- Медиагалерея с изображениями и видео.
+- Приём заявок и выгрузка в XLSX.
+
+## Стек
+
+| Часть | Технологии |
 | --- | --- |
-| `web` | Next.js 16, React 19, TypeScript, Tailwind CSS и Radix UI |
-| `api` | Fastify 5, Drizzle ORM, PostgreSQL 16, Zod, XLSX-выгрузка |
-| `contracts` | OpenAPI, из которого генерируются типы и схемы API |
+| [Frontend](web) | Next.js 16, React 19, TypeScript, Tailwind CSS, Radix UI |
+| [Backend](api) | Fastify 5, TypeScript, PostgreSQL 18.6, Drizzle ORM, Zod |
+| [Контракты](contracts/openapi.yaml) | OpenAPI, генерация TypeScript-типов и Zod-схем |
 
-API разделён на инфраструктурные плагины и предметные модули. Маршруты отвечают за HTTP,
-репозиторий — за PostgreSQL, отдельный сервис формирует XLSX.
-Vitest проверяет HTTP и настоящую БД; Biome, cspell и Knip проверяют код API.
-Frontend использует ESLint и TypeScript.
-
-Репозиторий содержит только приложение и воспроизводимое локальное окружение.
-Production-инфраструктура, серверные настройки и рабочие данные хранятся отдельно.
+API покрыт интеграционными тестами с PostgreSQL. CI проверяет код, сборку и актуальность сгенерированного контракта.
 
 ## Локальный запуск
 
-Нужны Node.js 24.19+, pnpm 12.6.0 и Docker Compose v2.
+Требуются Node.js 26.13.0 LTS, pnpm 12.16.1 и Docker Compose v2. Команды выполняются из корня репозитория:
 
 ```sh
-corepack pnpm install --frozen-lockfile
+npm install --global pnpm@12.16.1
+pnpm install --frozen-lockfile
 cp api/.env.example api/.env
 cp web/.env.example web/.env.local
-corepack pnpm run db:up
-corepack pnpm run db:migrate
-corepack pnpm run dev
+pnpm run db:up
+pnpm run db:migrate
+pnpm run dev
 ```
 
-Сайт: `http://localhost:3000`, API: `http://localhost:5000`, Swagger: `http://localhost:5000/documentation`.
-Веб-приложение проксирует `/api/*` в API. Внешний адрес API не требуется для сборки.
-Демонстрационные реквизиты PostgreSQL и ключ выгрузки предназначены только для локального запуска.
+Сайт: [localhost:3000](http://localhost:3000) · API: [localhost:5000](http://localhost:5000) · Swagger: [документация API](http://localhost:5000/documentation).
 
-Для запуска готовых контейнеров:
+## Проверки и документация
+
+При запущенном PostgreSQL:
 
 ```sh
-docker compose --profile app up -d --build
+pnpm run check
 ```
 
-Compose ждёт PostgreSQL, применяет миграции и запускает API и web.
-При повторном запуске после изменения схемы выполните `docker compose --profile app run --rm migrate`
-перед обновлением API. Остановка: `docker compose --profile app down`.
+Подробности разработки, конфигурации и запуска в Docker — в документации [frontend](web/README.md) и [API](api/README.md).
 
-## Контракт и проверки
+---
 
-Источник контракта — `contracts/openapi.yaml`; `api/src/generated` вручную не редактируется.
-
-```sh
-corepack pnpm run codegen
-corepack pnpm run check
-```
-
-Для `check` PostgreSQL должен работать. Тесты создают отдельную временную БД и удаляют её после
-завершения; пользователь PostgreSQL должен иметь права создания БД. При необходимости задайте
-`TEST_DATABASE_URL`; по умолчанию используется `DATABASE_URL` из `api/.env`.
-CI запускает те же проверки на PostgreSQL 16 и проверяет актуальность сгенерированных файлов.
-
-API принимает `POST /contacts` с `name`, `phone`, необязательным `from`, возвращает `201`
-и созданную заявку. Телефон: `+7 (999) 123-45-67`. Сервер назначает дату самостоятельно.
-Выгрузка: `GET /contacts/export?key=...`. Readiness: `GET /health/ready`.
-Ошибки имеют формат `{ error, code, message, details? }`.
-
-## Права на материалы
-
-Код и материалы опубликованы для портфолио с разрешения владельца.
-Условия использования приведены в [NOTICE.md](NOTICE.md).
+Проект опубликован для портфолио с разрешения владельца. Права на фотографии, видео, визуализации, товарные обозначения и шрифты принадлежат их владельцам.
