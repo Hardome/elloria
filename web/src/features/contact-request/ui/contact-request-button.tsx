@@ -9,15 +9,13 @@ import type ContactDialog from './contact-dialog';
 type ContactRequestButtonProps = Pick<
   React.ComponentProps<typeof Button>,
   'children' | 'className' | 'size' | 'variant'
-> & {
-  payload?: React.ComponentProps<typeof ContactDialog>['payload'];
-};
+>;
 
 const loadDialog = () => import('./contact-dialog');
 
 const preloadDialog = () => loadDialog().catch(() => undefined);
 
-export default function ContactRequestButton({ children, payload, ...props }: ContactRequestButtonProps) {
+export default function ContactRequestButton({ children, ...props }: ContactRequestButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [Dialog, setDialog] = useState<typeof ContactDialog | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +68,7 @@ export default function ContactRequestButton({ children, payload, ...props }: Co
           {'Не удалось открыть форму. Нажмите ещё раз.'}
         </p>
       )}
-      {isOpen && Dialog && <Dialog isOpen={true} onClose={closeDialog} payload={payload} />}
+      {isOpen && Dialog && <Dialog isOpen={true} onClose={closeDialog} />}
     </React.Fragment>
   );
 }

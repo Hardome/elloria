@@ -74,7 +74,6 @@ const Footer = () => (
             ))}
           </div>
           <ContactRequestButton
-            payload={{ from: 'Футер сайта' }}
             className={'mt-4 w-full rounded-full bg-accent text-accent-foreground hover:bg-accent/90'}
             size={'lg'}
           >

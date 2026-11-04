@@ -4,15 +4,13 @@ import * as z from 'zod';
 
 export const zCreateContact = z.object({
     name: z.string().min(1).max(255).regex(/\S/),
-    phone: z.string().max(255).regex(/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/),
-    from: z.string().max(255).optional()
+    phone: z.string().max(255).regex(/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/)
 });
 
 export const zContact = z.object({
     id: z.int().gte(1).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }),
     name: z.string(),
     phone: z.string(),
-    from: z.string().nullable(),
     createdAt: z.iso.datetime()
 });
 

@@ -13,12 +13,9 @@ import { Input } from '@/shared/ui/input';
 interface ContactDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  payload?: {
-    from?: string;
-  };
 }
 
-const ContactDialog = ({ isOpen, onClose, payload }: ContactDialogProps) => {
+const ContactDialog = ({ isOpen, onClose }: ContactDialogProps) => {
   const formId = useId();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -55,7 +52,6 @@ const ContactDialog = ({ isOpen, onClose, payload }: ContactDialogProps) => {
         body: JSON.stringify({
           name: name.trim(),
           phone,
-          ...payload,
         }),
       });
 

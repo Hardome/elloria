@@ -11,7 +11,7 @@ import { zContact } from '#app/generated/zod.gen';
 describe('Заявки', () => {
   let app: FastifyInstance;
   const ids: number[] = [];
-  const payload = { name: 'Иван', phone: '+7 (999) 123-45-67', from: 'Сайт' };
+  const payload = { name: 'Иван', phone: '+7 (999) 123-45-67' };
   beforeAll(async () => {
     app = await buildApp({
       environment: parseEnvironment({
@@ -43,31 +43,27 @@ describe('Заявки', () => {
     expect(row?.name).toBe('Иван');
     expect(row?.createdAt.toISOString()).toBe(contact.createdAt);
   });
-  it('принимает заявку без источника', async () => {
+  it('не возвращает удалённое поле источника', async () => {
     const response = await app.inject({
       method: 'POST',
       url: '/contacts',
-      payload: { name: 'Анна', phone: payload.phone },
+      payload: { name: 'Анна', phone: payload.phone, from: 'Старый клиент' },
     });
     expect(response.statusCode).toBe(201);
     ids.push(response.json().id);
-    expect(response.json().from).toBeNull();
+    expect(response.json()).not.toHaveProperty('from');
   });
-  it.each([
-    { name: '' },
-    { name: '   ' },
-    { name: 'x'.repeat(256) },
-    { phone: '89991234567' },
-    { from: 'x'.repeat(256) },
-    { phone: null },
-  ])('отклоняет неверную заявку %j', async (invalid) => {
-    const response = await app.inject({ method: 'POST', url: '/contacts', payload: { ...payload, ...invalid } });
-    expect(response.statusCode).toBe(400);
-    expect(response.json()).toMatchObject({
-      code: 'invalid_request',
-      details: expect.arrayContaining([{ path: expect.stringMatching(/^body\./), message: expect.any(String) }]),
-    });
-  });
+  it.each([{ name: '' }, { name: '   ' }, { name: 'x'.repeat(256) }, { phone: '89991234567' }, { phone: null }])(
+    'отклоняет неверную заявку %j',
+    async (invalid) => {
+      const response = await app.inject({ method: 'POST', url: '/contacts', payload: { ...payload, ...invalid } });
+      expect(response.statusCode).toBe(400);
+      expect(response.json()).toMatchObject({
+        code: 'invalid_request',
+        details: expect.arrayContaining([{ path: expect.stringMatching(/^body\./), message: expect.any(String) }]),
+      });
+    },
+  );
   it('обрабатывает повреждённый JSON и неверный Content-Type', async () => {
     const malformed = await app.inject({
       method: 'POST',
@@ -90,7 +86,7 @@ describe('Заявки', () => {
     const response = await app.inject({
       method: 'POST',
       url: '/contacts',
-      payload: { ...payload, from: 'x'.repeat(2 * 1024 * 1024) },
+      payload: { ...payload, name: 'x'.repeat(2 * 1024 * 1024) },
     });
     expect(response.statusCode).toBe(413);
     expect(response.json().code).toBe('payload_too_large');
@@ -116,7 +112,7 @@ describe('Заявки', () => {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(Uint8Array.from(response.rawPayload).buffer);
     const sheet = workbook.getWorksheet('Contacts');
-    expect(sheet?.getRow(1).values).toEqual([undefined, 'ID', 'Имя', 'Телефон', 'Откуда', 'Дата создания']);
+    expect(sheet?.getRow(1).values).toEqual([undefined, 'ID', 'Имя', 'Телефон', 'Дата создания']);
     const exported = sheet?.getColumn(1).values.slice(2);
     expect(exported).toEqual([...ids].sort((a, b) => a - b));
     expect(sheet?.getRow(1).font.bold).toBe(true);
