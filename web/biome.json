@@ -208,6 +208,6 @@
     }
   },
   "tailwind": {
-    "stylesheet": "./src/app/globals.css"
+    "stylesheet": "./src/app/styles/globals.css"
   }
 }
