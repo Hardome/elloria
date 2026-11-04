@@ -1,0 +1,11 @@
+pre-commit:
+  commands:
+    lint-staged:
+      run: pnpm exec lint-staged --max-arg-length 6000
+
+pre-push:
+  commands:
+    api:
+      run: pnpm --filter @elloria/api run typecheck && pnpm --filter @elloria/api run test
+    web:
+      run: pnpm --filter @elloria/web run typecheck

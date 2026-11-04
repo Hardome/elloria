@@ -4,6 +4,7 @@ WORKDIR /app
 
 FROM base AS builder
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY scripts/install-hooks.cjs ./scripts/install-hooks.cjs
 COPY api/package.json ./api/package.json
 COPY web/package.json ./web/package.json
 RUN pnpm install --frozen-lockfile --filter @elloria/api
@@ -13,6 +14,7 @@ RUN pnpm --filter @elloria/api run build
 
 FROM base AS production-dependencies
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY scripts/install-hooks.cjs ./scripts/install-hooks.cjs
 COPY api/package.json ./api/package.json
 COPY web/package.json ./web/package.json
 RUN pnpm install --prod --frozen-lockfile --filter @elloria/api

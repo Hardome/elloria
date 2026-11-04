@@ -1,19 +1,20 @@
 'use client';
 
-import React, {useState} from 'react';
-import {Menu, Phone, X} from 'lucide-react';
+import React, { useState } from 'react';
+
+import { Menu, Phone, X } from 'lucide-react';
 import Link from 'next/link';
 
 import ChooseHouseButton from '@/components/ChooseHouseButton';
-import {Button} from '@/components/ui/button';
-import {P} from '@/components/ui/typography';
+import { Button } from '@/components/ui/button';
+import { P } from '@/components/ui/typography';
 import useScrollToSection from '@/hooks/useScrollToSection';
-import {COMPANY, MENU_ITEMS} from '@/lib/constants';
+import { COMPANY, MENU_ITEMS } from '@/lib/constants';
 
 import MobileMenu from './MobileMenu';
 
 const scrollToTop = () => {
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 export default function HeaderClient() {
@@ -30,55 +31,48 @@ export default function HeaderClient() {
 
   return (
     <React.Fragment>
-      <header
-        className={
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ' +
-          'bg-background'
-        }
-      >
+      <header className={'fixed top-0 right-0 left-0 z-50 bg-background transition-all duration-300'}>
         <div className={'container mx-auto px-4 lg:px-8'}>
-          <div className={'flex items-center justify-between h-18'}>
+          <div className={'flex h-18 items-center justify-between'}>
             <Link
               href={'/'}
               onClick={scrollToTop}
-              className={'text-xl lg:text-2xl font-bold hover:opacity-80 transition-opacity'}
+              className={'text-xl font-bold transition-opacity hover:opacity-80 lg:text-2xl'}
               aria-label={'ELLORIA - перейти на главную страницу'}
             >
               {'ELLORIA'}
             </Link>
-            <nav className={'hidden lg:flex items-center gap-8'} aria-label={'Основная навигация'}>
-              {
-                MENU_ITEMS.map((item) => (
-                  <Button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={'text-lg text-white hover:text-gray-300 transition-colors'}
-                    variant={'text'}
-                    aria-label={`Перейти к разделу ${item.label}`}
-                  >
-                    {item.label}
-                  </Button>
-                ))
-              }
+            <nav className={'hidden items-center gap-8 lg:flex'} aria-label={'Основная навигация'}>
+              {MENU_ITEMS.map((item) => (
+                <Button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={'text-lg text-white transition-colors hover:text-gray-300'}
+                  variant={'text'}
+                  aria-label={`Перейти к разделу ${item.label}`}
+                >
+                  {item.label}
+                </Button>
+              ))}
             </nav>
             <div className={'flex items-center gap-4'}>
               <a
                 href={COMPANY.phoneHref}
-                className={
-                  'hidden lg:flex items-center gap-2 text-white hover:text-gray-300 ' +
-                  'transition-colors text-lg font-medium'
-                }
+                className={[
+                  'hidden items-center gap-2 text-lg font-medium text-white transition-colors',
+                  'hover:text-gray-300 lg:flex',
+                ].join(' ')}
               >
                 <Phone size={18} />
                 <P>{COMPANY.phone}</P>
               </a>
-              <ChooseHouseButton size={'lg'} className={'hidden lg:flex rounded-full'} />
+              <ChooseHouseButton size={'lg'} className={'hidden rounded-full lg:flex'} />
               <Button
                 id={'mobile-menu-toggle'}
                 onClick={toggleMobileMenu}
                 variant={'text'}
                 size={'lg'}
-                className={'lg:hidden p-2 text-white hover:text-gray-300 transition-colors'}
+                className={'p-2 text-white transition-colors hover:text-gray-300 lg:hidden'}
                 title={isMobileMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
                 aria-label={isMobileMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
                 aria-expanded={isMobileMenuOpen}
@@ -94,4 +88,3 @@ export default function HeaderClient() {
     </React.Fragment>
   );
 }
-

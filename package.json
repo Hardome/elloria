@@ -8,15 +8,17 @@
     "pnpm": ">=12.16.1 <13"
   },
   "scripts": {
+    "prepare": "node scripts/install-hooks.cjs",
     "dev": "pnpm --parallel --filter @elloria/api --filter @elloria/web run dev",
     "codegen": "pnpm --filter @elloria/api run codegen",
     "build": "pnpm --filter @elloria/api run build && pnpm --filter @elloria/web run build",
-    "check": "pnpm --filter @elloria/api run check && pnpm --filter @elloria/web run lint && pnpm --filter @elloria/web run typecheck && pnpm --filter @elloria/web run build",
+    "check": "pnpm run spellcheck && pnpm --filter @elloria/api run check && pnpm --filter @elloria/web run lint && pnpm --filter @elloria/web run typecheck && pnpm --filter @elloria/web run build",
     "db:up": "docker compose up -d --wait database",
     "db:down": "docker compose down",
     "db:migrate": "pnpm --filter @elloria/api run db:migrate",
     "test": "pnpm --filter @elloria/api run test",
-    "lint": "pnpm --filter @elloria/api run lint && pnpm --filter @elloria/api run spellcheck && pnpm --filter @elloria/api run lint:knip && pnpm --filter @elloria/web run lint",
+    "lint": "pnpm --filter @elloria/api run lint && pnpm run spellcheck && pnpm --filter @elloria/api run lint:knip && pnpm --filter @elloria/web run lint",
+    "spellcheck": "cspell --config cspell.config.yaml",
     "typecheck": "pnpm --filter @elloria/api run typecheck && pnpm --filter @elloria/web run typecheck",
     "audit": "pnpm audit --prod --audit-level high",
     "check:containers": "docker compose --profile app up -d --build --wait --wait-timeout 180"
@@ -26,5 +28,11 @@
     "type": "git",
     "url": "https://github.com/Hardome/elloria.git"
   },
-  "homepage": "https://elloria.ru"
+  "homepage": "https://elloria.ru",
+  "devDependencies": {
+    "@cspell/dict-ru_ru": "2.3.4",
+    "cspell": "10.4.0",
+    "lefthook": "2.2.2",
+    "lint-staged": "17.6.0"
+  }
 }

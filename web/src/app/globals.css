@@ -6,14 +6,14 @@ body {
 }
 
 :root {
-  --background: #18191A;
+  --background: #18191a;
   --foreground: hsl(223.8136 -172.5242% 100.0000%);
   --card: #202122;
   --card-foreground: hsl(223.8136 -172.5242% 100.0000%);
   --primary: hsl(223.8136 -172.5242% 100.0000%);
   --primary-foreground: hsl(0 0% 0%);
-  --secondary: #898D91;
-  --secondary-foreground: #18191A;
+  --secondary: #898d91;
+  --secondary-foreground: #18191a;
   --muted: hsl(223.8136 0.0000% 11.3040%);
   --muted-foreground: hsl(223.8136 0.0000% 64.4710%);
   --accent: hsl(223.8136 0.0000% 19.8916%);
@@ -24,7 +24,7 @@ body {
   --ring: hsl(223.8136 0.0000% 64.4710%);
   --font-sans: var(--font-houschka), sans-serif;
   --font-serif: var(--font-cormorant), serif;
-  --font-mono: 'Courier New', Courier, monospace;
+  --font-mono: "Courier New", Courier, monospace;
   --radius: 0.5rem;
   --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
   --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 4px 6px -1px hsl(0 0% 0% / 0.18);
@@ -78,19 +78,27 @@ body {
 }
 
 @keyframes mobile-menu-enter {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 @keyframes mobile-menu-exit {
-  from { transform: translateY(0); }
-  to { transform: translateY(-100%); }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
 }
 
-.mobile-menu-panel[data-state='open'] {
+.mobile-menu-panel[data-state="open"] {
   animation: mobile-menu-enter 280ms ease-out both;
 }
 
-.mobile-menu-panel[data-state='closed'] {
+.mobile-menu-panel[data-state="closed"] {
   animation: mobile-menu-exit 220ms ease-in both;
 }

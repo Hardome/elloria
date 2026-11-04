@@ -1,21 +1,23 @@
-/* eslint-disable max-len */
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import {COMPANY} from '@/lib/constants';
+import { COMPANY } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Согласие на обработку персональных данных | ELLORIA',
   description: 'Условия согласия на обработку имени и номера телефона при отправке заявки на сайте ELLORIA.',
-  alternates: {canonical: 'https://elloria.ru/consent'}
+  alternates: { canonical: 'https://elloria.ru/consent' },
 };
 
 export default function ConsentPage() {
   return (
-    <main className={'min-h-screen bg-background px-4 pb-20 pt-32 sm:px-6'}>
+    <main className={'min-h-screen bg-background px-4 pt-32 pb-20 sm:px-6'}>
       <article className={'mx-auto flex max-w-3xl flex-col gap-8 font-houschka text-foreground'}>
         <header className={'flex flex-col gap-3'}>
-          <Link href={'/'} className={'text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground'}>
+          <Link
+            href={'/'}
+            className={'text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground'}
+          >
             {'На главную'}
           </Link>
           <h1 className={'font-serif text-4xl leading-tight sm:text-5xl'}>
@@ -28,16 +30,28 @@ export default function ConsentPage() {
           <p>
             {'Отмечая чекбокс согласия и отправляя форму на сайте elloria.ru, я даю '}
             {COMPANY.name}
-            {` (ИНН ${COMPANY.inn}, адрес: ${COMPANY.address}) согласие на обработку моих персональных данных на следующих условиях:`}
+            {[
+              ` (ИНН ${COMPANY.inn}, адрес: ${COMPANY.address}) `,
+              'согласие на обработку моих персональных данных ',
+              'на следующих условиях:',
+            ].join('')}
           </p>
           <ul className={'ml-6 list-disc space-y-3'}>
             <li>{'Данные: указанные мной имя и номер телефона.'}</li>
             <li>{'Цель: обработать мою заявку и связаться со мной по указанному номеру телефона.'}</li>
             <li>
-              {'Действия: сбор, запись, систематизация, хранение, уточнение, использование и удаление данных. Обработка осуществляется с использованием средств автоматизации.'}
+              {[
+                'Действия: сбор, запись, систематизация, хранение, уточнение, использование и ',
+                'удаление данных. Обработка осуществляется с использованием средств ',
+                'автоматизации.',
+              ].join('')}
             </li>
             <li>
-              {'Согласие действует с момента отправки формы до достижения указанной цели или до его отзыва, но не более одного года с даты последнего взаимодействия по заявке, если дальнейшая обработка не требуется на ином законном основании.'}
+              {[
+                'Согласие действует с момента отправки формы до достижения указанной цели или до ',
+                'его отзыва, но не более одного года с даты последнего взаимодействия по заявке, ',
+                'если дальнейшая обработка не требуется на ином законном основании.',
+              ].join('')}
             </li>
           </ul>
           <p>

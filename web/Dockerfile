@@ -3,6 +3,7 @@ RUN npm install -g pnpm@12.16.1
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1 BACKEND_INTERNAL_URL=http://api:5000
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY scripts/install-hooks.cjs ./scripts/install-hooks.cjs
 COPY api/package.json ./api/package.json
 COPY web/package.json ./web/package.json
 RUN pnpm install --frozen-lockfile --filter @elloria/web
