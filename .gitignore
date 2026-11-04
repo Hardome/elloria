@@ -12,3 +12,4 @@ backup_*.sql
 *.tsbuildinfo
 .playwright-mcp/
 .DS_Store
+docs/tmp/

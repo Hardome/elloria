@@ -45,7 +45,13 @@ pnpm run dev
 pnpm run check
 ```
 
-Подробности разработки, конфигурации и запуска в Docker — в документации [frontend](web/README.md) и [API](api/README.md).
+- [Карта документации и порядок ведения планов и решений](docs/README.md).
+- [Разработка Web](web/README.md) и [API](api/README.md).
+- [Конфигурация API и подключение Web](docs/guides/api-configuration.md).
+- [Локальный запуск и проверка контейнеров](docs/guides/local-containers.md).
+- [Ручной регресс](docs/guides/regression.md).
+
+Production-окружение настраивается отдельным репозиторием.
 
 ---
 
