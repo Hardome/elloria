@@ -1,0 +1,96 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+body {
+  font-family: var(--font-cormorant), Helvetica, sans-serif;
+}
+
+:root {
+  --background: #18191A;
+  --foreground: hsl(223.8136 -172.5242% 100.0000%);
+  --card: #202122;
+  --card-foreground: hsl(223.8136 -172.5242% 100.0000%);
+  --primary: hsl(223.8136 -172.5242% 100.0000%);
+  --primary-foreground: hsl(0 0% 0%);
+  --secondary: #898D91;
+  --secondary-foreground: #18191A;
+  --muted: hsl(223.8136 0.0000% 11.3040%);
+  --muted-foreground: hsl(223.8136 0.0000% 64.4710%);
+  --accent: hsl(223.8136 0.0000% 19.8916%);
+  --accent-foreground: hsl(223.8136 -172.5242% 100.0000%);
+  --destructive: hsl(359.9132 100.2494% 67.8807%);
+  --border: hsl(223.8136 0.0000% 14.0871%);
+  --input: hsl(223.8136 0.0000% 19.8916%);
+  --ring: hsl(223.8136 0.0000% 64.4710%);
+  --font-sans: var(--font-houschka), sans-serif;
+  --font-serif: var(--font-cormorant), serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --radius: 0.5rem;
+  --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.09);
+  --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 4px 6px -1px hsl(0 0% 0% / 0.18);
+  --shadow-soft: 0px 2px 8px 0px hsl(0 0% 0% / 0.12);
+  --shadow-medium: 0px 4px 12px 0px hsl(0 0% 0% / 0.15);
+  --light-text: rgb(168, 168, 168);
+  --swiper-theme-color: var(--primary);
+}
+
+@theme inline {
+  --color-light-text: var(--light-text);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+  --font-houschka: var(--font-houschka);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-medium: var(--shadow-medium);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes mobile-menu-enter {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes mobile-menu-exit {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+.mobile-menu-panel[data-state='open'] {
+  animation: mobile-menu-enter 280ms ease-out both;
+}
+
+.mobile-menu-panel[data-state='closed'] {
+  animation: mobile-menu-exit 220ms ease-in both;
+}

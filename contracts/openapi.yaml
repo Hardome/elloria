@@ -1,0 +1,183 @@
+openapi: 3.1.0
+info:
+  title: ELLORIA API
+  version: 2.0.0
+paths:
+  /contacts:
+    post:
+      operationId: createContact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateContact"
+      responses:
+        "201":
+          description: Заявка создана
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contact"
+        "400":
+          $ref: "#/components/responses/ApiError"
+        "413":
+          $ref: "#/components/responses/ApiError"
+        "415":
+          $ref: "#/components/responses/ApiError"
+        "429":
+          $ref: "#/components/responses/ApiError"
+        "500":
+          $ref: "#/components/responses/ApiError"
+  /contacts/export:
+    get:
+      operationId: exportContacts
+      security:
+        - exportKey: []
+      parameters:
+        - name: key
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: XLSX со списком заявок
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        "400":
+          $ref: "#/components/responses/ApiError"
+        "401":
+          $ref: "#/components/responses/ApiError"
+        "429":
+          $ref: "#/components/responses/ApiError"
+        "500":
+          $ref: "#/components/responses/ApiError"
+  /health:
+    get:
+      operationId: getHealth
+      responses:
+        "200":
+          description: API работает
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ status, timestamp, environment ]
+                properties:
+                  status:
+                    type: string
+                    enum: [ OK ]
+                  timestamp:
+                    type: string
+                    format: date-time
+                  environment:
+                    type: string
+                    enum: [ development, test, production ]
+  /health/live:
+    get:
+      operationId: getLiveness
+      responses:
+        "200":
+          description: Процесс работает
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ status ]
+                properties:
+                  status:
+                    type: string
+                    enum: [ alive ]
+  /health/ready:
+    get:
+      operationId: getReadiness
+      responses:
+        "200":
+          description: База доступна и схема установлена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Readiness"
+        "503":
+          description: База или схема недоступна
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Readiness"
+components:
+  securitySchemes:
+    exportKey:
+      type: apiKey
+      in: query
+      name: key
+  responses:
+    ApiError:
+      description: Ошибка запроса
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+  schemas:
+    CreateContact:
+      type: object
+      required: [ name, phone ]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: '\S'
+        phone:
+          type: string
+          maxLength: 255
+          pattern: '^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$'
+        from:
+          type: string
+          maxLength: 255
+    Contact:
+      type: object
+      required: [ id, name, phone, from, createdAt ]
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+        name:
+          type: string
+        phone:
+          type: string
+        from:
+          type: [ string, "null" ]
+        createdAt:
+          type: string
+          format: date-time
+    ApiError:
+      type: object
+      required: [ error, code, message ]
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            required: [ path, message ]
+            properties:
+              path:
+                type: string
+              message:
+                type: string
+    Readiness:
+      type: object
+      required: [ status ]
+      properties:
+        status:
+          type: string
+          enum: [ ready, not_ready ]

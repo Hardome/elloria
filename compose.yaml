@@ -1,0 +1,54 @@
+name: elloria-local
+services:
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: elloria
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d elloria']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  migrate:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/elloria
+    command: ['node', 'dist/commands/migrate.js']
+    depends_on:
+      database:
+        condition: service_healthy
+    profiles: [app]
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/elloria
+      EXPORT_KEY: local-development-key
+      CORS_ORIGIN: http://localhost:3000,http://127.0.0.1:3000
+    ports:
+      - '127.0.0.1:5000:5000'
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    profiles: [app]
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - '127.0.0.1:3000:3000'
+    depends_on:
+      api:
+        condition: service_healthy
+    profiles: [app]
+volumes:
+  postgres_data:

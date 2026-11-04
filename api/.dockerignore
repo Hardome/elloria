@@ -1,0 +1,14 @@
+Dockerfile
+.dockerignore
+.git
+.gitignore
+README.md
+node_modules
+dist
+.env
+.env.*
+coverage
+.coverage
+.nyc_output
+*.log
+pnpm-debug.log

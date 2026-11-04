@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.next/
+out/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+*.sql.gz
+backup_*.sql
+*.tsbuildinfo
+.playwright-mcp/
+.DS_Store

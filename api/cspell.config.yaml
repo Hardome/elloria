@@ -1,0 +1,34 @@
+version: "0.2"
+language: en,ru
+import:
+  - "@cspell/dict-ru_ru/cspell-ext.json"
+files:
+  - "src/**/*.ts"
+  - "test/**/*.ts"
+  - "*.config.ts"
+  - "README.md"
+ignorePaths:
+  - src/generated/**
+  - src/db/migrations/**
+words:
+  - argb
+  - codegen
+  - nosniff
+  - openxmlformats
+  - officedocument
+  - spreadsheetml
+  - elloria
+  - stageby
+  - architector
+  - fastify
+  - healthcheck
+  - timestamptz
+  - openapi
+  - pino
+  - tsx
+  - xlsx
+  - exceljs
+  - drizzle
+  - pnpm
+  - cspell
+  - knip
