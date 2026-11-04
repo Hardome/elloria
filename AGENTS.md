@@ -25,7 +25,7 @@
 Команды выполняются из корня репозитория:
 
 - `pnpm install --frozen-lockfile` устанавливает зависимости workspace.
-- `pnpm run db:up`, `pnpm run db:migrate`, `pnpm run dev` запускают локальное окружение.
+- `pnpm run db:setup`, `pnpm run dev` запускают локальное окружение; подробности — в [README](README.md#локальный-запуск).
 - `pnpm run codegen` генерирует API-типы и Zod-схемы из `contracts/openapi.yaml`.
 - `pnpm run check` проверяет API и Web; тестам API нужен PostgreSQL с правом создавать БД.
 - `pnpm run check:containers` собирает и запускает локальные контейнеры приложения.
