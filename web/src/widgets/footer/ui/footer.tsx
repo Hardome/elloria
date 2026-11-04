@@ -43,27 +43,19 @@ const Footer = () => {
               <div className={'space-y-3 text-sm text-primary-foreground/80'}>
                 <div className={'flex items-start gap-3'}>
                   <MapPin size={18} className={'mt-1 flex-shrink-0'} aria-hidden={'true'} />
-                  <span itemProp={'address'} itemScope={true} itemType={'https://schema.org/PostalAddress'}>
-                    <span itemProp={'streetAddress'}>{COMPANY.address}</span>
+                  <span>
+                    <span>{COMPANY.address}</span>
                   </span>
                 </div>
                 <div className={'flex items-center gap-3'}>
                   <Phone size={18} className={'flex-shrink-0'} aria-hidden={'true'} />
-                  <a
-                    href={COMPANY.phoneHref}
-                    className={'transition-colors hover:text-primary-foreground'}
-                    itemProp={'telephone'}
-                  >
+                  <a href={COMPANY.phoneHref} className={'transition-colors hover:text-primary-foreground'}>
                     {COMPANY.phone}
                   </a>
                 </div>
                 <div className={'flex items-center gap-3'}>
                   <Mail size={18} className={'flex-shrink-0'} aria-hidden={'true'} />
-                  <a
-                    href={`mailto:${COMPANY.email}`}
-                    className={'transition-colors hover:text-primary-foreground'}
-                    itemProp={'email'}
-                  >
+                  <a href={`mailto:${COMPANY.email}`} className={'transition-colors hover:text-primary-foreground'}>
                     {COMPANY.email}
                   </a>
                 </div>
