@@ -1,59 +1,61 @@
 /* eslint-disable react/no-multi-comp */
-import React, {forwardRef} from 'react';
-import {cva, type VariantProps} from 'class-variance-authority';
+import type React from 'react';
+import { forwardRef } from 'react';
 
-import {cn} from '@/lib/utils';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-const h1Variants = cva('scroll-m-20 tracking-tight', {
+const h1Variants = tv({
+  base: 'scroll-m-20 tracking-tight',
   variants: {
     variant: {
-      hero: 'md:text-5xl lg:text-7xl text-white drop-shadow-lg ' +
-        'text-balance font-normal whitespace-pre-line',
-      page: 'text-4xl font-bold'
-    }
-  }
+      hero: 'font-normal text-balance whitespace-pre-line text-white drop-shadow-lg md:text-5xl lg:text-7xl',
+      page: 'text-4xl font-bold',
+    },
+  },
 });
 
-const h2Variants = cva('scroll-m-20 tracking-tight first:mt-0', {
+const h2Variants = tv({
+  base: 'scroll-m-20 tracking-tight first:mt-0',
   variants: {
     variant: {
-      section: 'text-3xl lg:text-5xl text-center font-normal',
-      card: 'text-3xl lg:text-5xl text-center lg:mb-12 font-medium'
-    }
-  }
+      section: 'text-center text-3xl font-normal lg:text-5xl',
+      card: 'text-center text-3xl font-medium lg:mb-12 lg:text-5xl',
+    },
+  },
 });
 
-const h3Variants = cva('scroll-m-20 tracking-tight', {
+const h3Variants = tv({
+  base: 'scroll-m-20 tracking-tight',
   variants: {
     variant: {
       footer: 'text-xl font-bold',
       footerLarge: 'text-2xl font-bold',
-      card: 'text-2xl lg:text-3xl font-normal'
-    }
-  }
+      card: 'text-2xl font-normal lg:text-3xl',
+    },
+  },
 });
 
-const pVariants = cva('', {
+const pVariants = tv({
+  base: '',
   variants: {
     variant: {
       default: '',
       price: 'text-3xl font-bold text-muted-foreground',
-      body: 'lg:text-xl leading-relaxed text-light-text whitespace-pre-line ' +
-        'font-houschka text-center lg:text-left'
-    }
+      body: 'text-center font-houschka leading-relaxed whitespace-pre-line text-light-text lg:text-left lg:text-xl',
+    },
   },
   defaultVariants: {
-    variant: 'default'
-  }
+    variant: 'default',
+  },
 });
 
-const leadVariants = cva('text-xl', {
+const leadVariants = tv({
+  base: 'text-xl',
   variants: {
     variant: {
-      hero: 'md:text-2xl text-white/95 drop-shadow-md ' +
-        'text-balance font-light font-houschka'
-    }
-  }
+      hero: 'font-houschka font-light text-balance text-white/95 drop-shadow-md md:text-2xl',
+    },
+  },
 });
 
 type H1Props = React.HTMLAttributes<HTMLHeadingElement> & VariantProps<typeof h1Variants>;
@@ -62,57 +64,27 @@ type H3Props = React.HTMLAttributes<HTMLHeadingElement> & VariantProps<typeof h3
 type PProps = React.HTMLAttributes<HTMLParagraphElement> & VariantProps<typeof pVariants>;
 type LeadProps = React.HTMLAttributes<HTMLParagraphElement> & VariantProps<typeof leadVariants>;
 
-export const H1 = forwardRef<HTMLHeadingElement, H1Props>(
-  ({className, variant, ...props}, ref) => (
-    <h1
-      ref={ref}
-      className={cn(h1Variants({variant}), className)}
-      {...props}
-    />
-  )
-);
+export const H1 = forwardRef<HTMLHeadingElement, H1Props>(({ className, variant, ...props }, ref) => (
+  <h1 ref={ref} className={h1Variants({ variant, className })} {...props} />
+));
 H1.displayName = 'H1';
 
-export const H2 = forwardRef<HTMLHeadingElement, H2Props>(
-  ({className, variant, ...props}, ref) => (
-    <h2
-      ref={ref}
-      className={cn(h2Variants({variant}), className)}
-      {...props}
-    />
-  )
-);
+export const H2 = forwardRef<HTMLHeadingElement, H2Props>(({ className, variant, ...props }, ref) => (
+  <h2 ref={ref} className={h2Variants({ variant, className })} {...props} />
+));
 H2.displayName = 'H2';
 
-export const H3 = forwardRef<HTMLHeadingElement, H3Props>(
-  ({className, variant, ...props}, ref) => (
-    <h3
-      ref={ref}
-      className={cn(h3Variants({variant}), className)}
-      {...props}
-    />
-  )
-);
+export const H3 = forwardRef<HTMLHeadingElement, H3Props>(({ className, variant, ...props }, ref) => (
+  <h3 ref={ref} className={h3Variants({ variant, className })} {...props} />
+));
 H3.displayName = 'H3';
 
-export const Lead = forwardRef<HTMLParagraphElement, LeadProps>(
-  ({className, variant, ...props}, ref) => (
-    <p
-      ref={ref}
-      className={cn(leadVariants({variant}), className)}
-      {...props}
-    />
-  )
-);
+export const Lead = forwardRef<HTMLParagraphElement, LeadProps>(({ className, variant, ...props }, ref) => (
+  <p ref={ref} className={leadVariants({ variant, className })} {...props} />
+));
 Lead.displayName = 'Lead';
 
-export const P = forwardRef<HTMLParagraphElement, PProps>(
-  ({className, variant, ...props}, ref) => (
-    <p
-      ref={ref}
-      className={cn(pVariants({variant}), className)}
-      {...props}
-    />
-  )
-);
+export const P = forwardRef<HTMLParagraphElement, PProps>(({ className, variant, ...props }, ref) => (
+  <p ref={ref} className={pVariants({ variant, className })} {...props} />
+));
 P.displayName = 'P';

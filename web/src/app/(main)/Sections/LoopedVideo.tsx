@@ -1,12 +1,9 @@
 import ChooseHouseButton from '@/components/ChooseHouseButton';
-import {H1, Lead} from '@/components/ui/typography';
+import { H1, Lead } from '@/components/ui/typography';
 
 export default function LoopedVideoSection() {
   return (
-    <section
-      aria-label={'Главная секция с видео'}
-      className={'relative h-[100vh] w-full md:h-screen overflow-hidden'}
-    >
+    <section aria-label={'Главная секция с видео'} className={'relative h-[100vh] w-full overflow-hidden md:h-screen'}>
       <video
         className={'absolute inset-0 h-full w-full object-cover opacity-70'}
         src={'/interview.webm'}
@@ -17,25 +14,16 @@ export default function LoopedVideoSection() {
         aria-label={'Видео презентация поселка ELLORIA'}
       />
       <div className={'absolute inset-0 bg-black/40'} />
-      <div className={'relative h-full flex flex-col items-center justify-center px-4 text-center'}>
-        <div className={'max-w-4xl space-y-6 animate-fade-in'}>
-          <H1 variant={'hero'}>
-            {'Дружелюбный поселок \nв пяти минутах от города'}
-          </H1>
-          <Lead variant={'hero'}>
-            {'Ваш дом — место наполнения энергией'}
-          </Lead>
-          <ChooseHouseButton size={'4xl'} className={'rounded-full mt-4 text-xl'} />
+      <div className={'relative flex h-full flex-col items-center justify-center px-4 text-center'}>
+        <div className={'animate-fade-in max-w-4xl space-y-6'}>
+          <H1 variant={'hero'}>{'Дружелюбный поселок \nв пяти минутах от города'}</H1>
+          <Lead variant={'hero'}>{'Ваш дом — место наполнения энергией'}</Lead>
+          <ChooseHouseButton size={'4xl'} className={'mt-4 rounded-full text-xl'} />
         </div>
       </div>
       <div className={'absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce'}>
-        <div
-          className={
-            'w-6 h-10 border-2 border-white/50 ' +
-            'rounded-full flex items-start justify-center p-2'
-          }
-        >
-          <div className={'w-1.5 h-3 bg-white/50 rounded-full'} />
+        <div className={'flex h-10 w-6 items-start justify-center rounded-full border-2 border-white/50 p-2'}>
+          <div className={'h-3 w-1.5 rounded-full bg-white/50'} />
         </div>
       </div>
     </section>

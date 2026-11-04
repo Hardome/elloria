@@ -3,6 +3,7 @@ packages:
   - web
 allowBuilds:
   esbuild: true
+  lefthook: true
   sharp: true
   unrs-resolver: true
 # The OpenAPI parser pins an affected patch; keep the fix scoped to that package.

@@ -77,9 +77,10 @@ pnpm run dev
 pnpm run check
 ```
 
-`check` запускает генерацию, Biome, cspell, Knip, проверку типов, Vitest и сборку.
+`check` запускает генерацию, Biome, Knip, проверку типов, Vitest и сборку.
 `lint` не исправляет исходники; для исправлений есть `lint:fix`.
-Доступны отдельные команды `typecheck`, `spellcheck`, `lint:knip`, `test`, `test:watch`, `build`.
+Доступны отдельные команды `typecheck`, `lint:knip`, `test`, `test:watch`, `build`.
+Проверка орфографии запускается из корня приложения: `pnpm run spellcheck`.
 
 Для тестов нужен PostgreSQL 18.6 и пользователь с правом создавать и удалять БД.
 Vitest создаёт отдельную временную БД, применяет миграции и удаляет её после тестов.

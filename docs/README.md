@@ -11,6 +11,7 @@
 
 ## Руководства
 
+- [Проверки перед коммитом и push](guides/git-hooks.md).
 - [Конфигурация API и подключение Web](guides/api-configuration.md).
 - [Локальный запуск и проверка контейнеров](guides/local-containers.md).
 - [Ручной регресс](guides/regression.md).

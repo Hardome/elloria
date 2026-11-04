@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import {H2, P} from '@/components/ui/typography';
+import { H2, P } from '@/components/ui/typography';
 
 const aboutContent = [
   {
@@ -15,7 +15,7 @@ const aboutContent = [
       'ELLORIA — это не просто дома. Это продуманная экосистема для жизни без суеты.',
     image: '/walkingArea.webp',
     imageHeight: 1080,
-    alt: 'Счастливая семья в поселке'
+    alt: 'Счастливая семья в поселке',
   },
   {
     title: 'Архитектура',
@@ -28,7 +28,7 @@ const aboutContent = [
       'мусора и вызова мастера. Ваше время слишком ценно, чтобы тратить его на это.',
     image: '/topPerspective3.webp',
     imageHeight: 1080,
-    alt: 'Современная архитектура домов'
+    alt: 'Современная архитектура домов',
   },
   {
     title: 'Природа',
@@ -42,56 +42,41 @@ const aboutContent = [
       'дружбы и традиции.',
     image: '/garden.webp',
     imageHeight: 1278,
-    alt: 'Парк и природа'
-  }
+    alt: 'Парк и природа',
+  },
 ];
 
 export default function AboutSection() {
   return (
-    <section id={'about'} className={'py-20 bg-background'}>
+    <section id={'about'} className={'bg-background py-20'}>
       <div className={'container mx-auto px-4 lg:px-8'}>
         <div className={'space-y-20 lg:space-y-32'}>
-          {
-            aboutContent.map((item, index) => (
-              <article
-              // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                className={
-                  `flex flex-col ${
-                    index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  } gap-8 lg:gap-16 bg-card rounded-2xl p-6 lg:p-8`
-                }
-              >
-                <div className={'space-y-4 lg:w-1/2 flex flex-col justify-center lg:px-15'}>
-                  <H2 variant={'card'}>
-                    {item.title}
-                  </H2>
-                  <P variant={'body'}>
-                    {item.text}
-                  </P>
-                </div>
-                <div
-                  className={
-                    'lg:aspect-[2/1] rounded-2xl overflow-hidden shadow-medium ' +
-                    'lg:w-1/2 lg:min-h-[480px]'
-                  }
-                >
-                  <Image
-                    src={item.image}
-                    alt={item.alt}
-                    width={1920}
-                    height={item.imageHeight}
-                    className={
-                      'w-full h-auto aspect-[3/2] lg:aspect-auto lg:h-full ' +
-                      'object-cover hover:scale-105 ' +
-                      'transition-transform duration-500'
-                    }
-                    sizes={'(max-width: 1024px) 100vw, 50vw'}
-                  />
-                </div>
-              </article>
-            ))
-          }
+          {aboutContent.map((item, index) => (
+            <article
+              key={item.title}
+              className={`flex flex-col ${
+                index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
+              } gap-8 rounded-2xl bg-card p-6 lg:gap-16 lg:p-8`}
+            >
+              <div className={'flex flex-col justify-center space-y-4 lg:w-1/2 lg:px-15'}>
+                <H2 variant={'card'}>{item.title}</H2>
+                <P variant={'body'}>{item.text}</P>
+              </div>
+              <div className={'overflow-hidden rounded-2xl shadow-medium lg:aspect-[2/1] lg:min-h-[480px] lg:w-1/2'}>
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  width={1920}
+                  height={item.imageHeight}
+                  className={[
+                    'aspect-[3/2] h-auto w-full object-cover transition-transform duration-500',
+                    'hover:scale-105 lg:aspect-auto lg:h-full',
+                  ].join(' ')}
+                  sizes={'(max-width: 1024px) 100vw, 50vw'}
+                />
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>

@@ -1,0 +1,213 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
+  "root": true,
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**/*.{js,cjs,mjs,ts,tsx,json,jsonc,css}",
+      "!!node_modules",
+      "!!.next",
+      "!!out",
+      "!!build",
+      "!!coverage",
+      "!next-env.d.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120,
+    "useEditorconfig": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "error",
+        "noForEach": "error",
+        "useDateNow": "error",
+        "useMathMinMax": "off",
+        "noExtraBooleanCast": "error",
+        "noAdjacentSpacesInRegex": "error",
+        "noUselessCatch": "error",
+        "noUselessEscapeInRegex": "error",
+        "noArguments": "error",
+        "noStaticOnlyClass": "error",
+        "noUselessSwitchCase": "error",
+        "useFlatMap": "error",
+        "useIndexOf": "error",
+        "noUselessTypeConstraint": "error",
+        "noBannedTypes": "error",
+        "noUselessFragments": "error",
+        "noUselessStringConcat": "error",
+        "useLiteralKeys": "error",
+        "noUselessRename": "error",
+        "noUselessTernary": "error",
+        "noUselessConstructor": "error",
+        "noCommaOperator": "error",
+        "noVoid": "error"
+      },
+      "correctness": {
+        "noUnusedVariables": "error",
+        "useExhaustiveDependencies": "warn",
+        "noComponentHookFactories": "error",
+        "noDuplicateFieldDefinitionNames": "error",
+        "noUnusedLabels": "error",
+        "noUnusedImports": "error",
+        "useValidForDirection": "error",
+        "noSwitchDeclarations": "error",
+        "noConstantCondition": "error",
+        "noEmptyCharacterClassInRegex": "error",
+        "noEmptyPattern": "error",
+        "noPrecisionLoss": "error",
+        "noNonoctalDecimalEscape": "error",
+        "noSelfAssign": "error",
+        "noUnsafeFinally": "error",
+        "noUnsafeOptionalChaining": "error",
+        "useYield": "error",
+        "useIsNan": "error",
+        "useValidTypeof": "error",
+        "useHookAtTopLevel": "error",
+        "useJsxKeyInIterable": "error",
+        "noChildrenProp": "error",
+        "noInvalidBuiltinInstantiation": "error"
+      },
+      "nursery": {
+        "useReactCompiler": "error",
+        "useTailwindSortedClasses": {
+          "level": "error",
+          "fix": "safe"
+        }
+      },
+      "style": {
+        "noCommonJs": "error",
+        "noNamespace": "error",
+        "useExportType": "error",
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": {
+            "filenameCases": ["camelCase", "PascalCase", "kebab-case"],
+            "strictCase": false
+          }
+        },
+        "useImportType": "error",
+        "useNodejsImportProtocol": "error",
+        "useImportsFirst": "error",
+        "useConsistentTestIt": "error",
+        "useArrayLiterals": "error",
+        "useSelfClosingElements": "error",
+        "useBlockStatements": "error",
+        "useConst": "error",
+        "useTemplate": "error",
+        "noYodaExpression": "error",
+        "useCollapsedElseIf": "error",
+        "noNestedTernary": "error",
+        "useShorthandAssign": "error",
+        "useObjectSpread": "error"
+      },
+      "suspicious": {
+        "noDuplicateTestHooks": "error",
+        "noExplicitAny": "error",
+        "noFocusedTests": "error",
+        "noMisplacedAssertion": "error",
+        "noSkippedTests": "error",
+        "noTsIgnore": "error",
+        "useErrorMessage": "error",
+        "noConditionalExpect": "error",
+        "useExpect": "error",
+        "noCatchAssign": "error",
+        "noIrregularWhitespace": "error",
+        "noPrototypeBuiltins": "error",
+        "noUselessRegexBackrefs": "error",
+        "noUselessEscapeInString": "error",
+        "noDocumentCookie": "error",
+        "noDuplicateEnumValues": "error",
+        "noExtraNonNullAssertion": "error",
+        "useDefaultSwitchClauseLast": "error",
+        "noConfusingLabels": "error",
+        "noMisleadingInstantiator": "error",
+        "noNonNullAssertedOptionalChain": "error",
+        "noUnsafeDeclarationMerging": "error",
+        "useNamespaceKeyword": "error",
+        "noAsyncPromiseExecutor": "error",
+        "noCompareNegZero": "error",
+        "noAssignInExpressions": "error",
+        "noControlCharactersInRegex": "error",
+        "noDebugger": "error",
+        "noDuplicateElseIf": "error",
+        "noDuplicateCase": "error",
+        "noFallthroughSwitchClause": "error",
+        "noGlobalAssign": "error",
+        "noMisleadingCharacterClass": "error",
+        "noShadowRestrictedNames": "error",
+        "noSparseArray": "error",
+        "noDuplicateJsxProps": "error",
+        "noArrayIndexKey": "error",
+        "noImportAssign": "error",
+        "noDoubleEquals": "error",
+        "noProto": "error"
+      },
+      "performance": {
+        "useDomNodeTextContent": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtmlWithChildren": "error",
+        "noGlobalEval": "error"
+      },
+      "a11y": {
+        "useButtonType": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  },
+  "css": {
+    "formatter": {
+      "enabled": true
+    },
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ["react", "react/**", "react-dom", "react-dom/**"],
+              ":BLANK_LINE:",
+              [":PACKAGE:", ":PACKAGE_WITH_PROTOCOL:", "!@/**"],
+              ":BLANK_LINE:",
+              ["@/**"],
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "tailwind": {
+    "stylesheet": "./src/app/globals.css"
+  }
+}

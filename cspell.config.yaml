@@ -3,13 +3,13 @@ language: en,ru
 import:
   - "@cspell/dict-ru_ru/cspell-ext.json"
 files:
-  - "src/**/*.ts"
-  - "test/**/*.ts"
-  - "*.config.ts"
-  - "README.md"
+  - "api/src/**/*.ts"
+  - "api/test/**/*.ts"
+  - "api/*.config.ts"
+  - "api/README.md"
 ignorePaths:
-  - src/generated/**
-  - src/db/migrations/**
+  - api/src/generated/**
+  - api/src/db/migrations/**
 words:
   - argb
   - codegen

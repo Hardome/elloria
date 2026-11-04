@@ -1,22 +1,23 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import {Navigation} from 'swiper/modules';
-import {Swiper, SwiperSlide} from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const DialogMediaSlider = dynamic(() => import('@/components/DialogMediaSlider'), {ssr: false});
+const DialogMediaSlider = dynamic(() => import('@/components/DialogMediaSlider'), { ssr: false });
 
 interface MediaGalleryProps {
-  images: {src: string; alt: string}[];
+  images: { src: string; alt: string }[];
   onReady?: () => void;
 }
 
-const MediaGallery = ({images, onReady}: MediaGalleryProps) => {
+const MediaGallery = ({ images, onReady }: MediaGalleryProps) => {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -28,53 +29,46 @@ const MediaGallery = ({images, onReady}: MediaGalleryProps) => {
         navigation={true}
         onSlideChange={(s) => setActive(s.activeIndex)}
         onSwiper={onReady}
-        className={'w-full rounded-xl overflow-hidden h-full'}
+        className={'h-full w-full overflow-hidden rounded-xl'}
         style={
           {
-            '--swiper-theme-color': '#fff'
+            '--swiper-theme-color': '#fff',
           } as React.CSSProperties
         }
       >
-        {
-          images.map((image, i) => (
-            <SwiperSlide key={image.src} className={'relative bg-card'}>
-              <button
-                type={'button'}
-                className={
-                  'absolute inset-0 size-full cursor-pointer ' +
-                  'focus-visible:outline-2 focus-visible:outline-offset-[-4px] ' +
-                  'focus-visible:outline-primary'
-                }
-                aria-label={`Открыть изображение: ${image.alt}`}
-                onClick={
-                  () => {
-                    setActive(i);
-                    setOpen(true);
-                  }
-                }
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt || ''}
-                  fill={true}
-                  sizes={'(max-width: 768px) 100vw, 50vw'}
-                  className={'object-cover select-none'}
-                />
-              </button>
-            </SwiperSlide>
-          ))
-        }
+        {images.map((image, i) => (
+          <SwiperSlide key={image.src} className={'relative bg-card'}>
+            <button
+              type={'button'}
+              className={[
+                'absolute inset-0 size-full cursor-pointer focus-visible:outline-2',
+                'focus-visible:outline-offset-[-4px] focus-visible:outline-primary',
+              ].join(' ')}
+              aria-label={`Открыть изображение: ${image.alt}`}
+              onClick={() => {
+                setActive(i);
+                setOpen(true);
+              }}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt || ''}
+                fill={true}
+                sizes={'(max-width: 768px) 100vw, 50vw'}
+                className={'object-cover select-none'}
+              />
+            </button>
+          </SwiperSlide>
+        ))}
       </Swiper>
-      {
-        open && (
-          <DialogMediaSlider
-            images={images}
-            currentIndex={active}
-            onClose={() => setOpen(false)}
-            onThumbnailClick={setActive}
-          />
-        )
-      }
+      {open && (
+        <DialogMediaSlider
+          images={images}
+          currentIndex={active}
+          onClose={() => setOpen(false)}
+          onThumbnailClick={setActive}
+        />
+      )}
     </React.Fragment>
   );
 };
