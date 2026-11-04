@@ -1,1 +1,1 @@
-export { default } from './ui/contact-dialog';
+export { default as ContactRequestButton } from './ui/contact-request-button';

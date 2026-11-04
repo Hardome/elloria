@@ -46,6 +46,15 @@ const aboutContent = [
   },
 ];
 
+const imageSizes = [
+  '(min-width: 1536px) 688px',
+  '(min-width: 1280px) 560px',
+  '(min-width: 1024px) 432px',
+  '(min-width: 768px) 688px',
+  '(min-width: 640px) 560px',
+  'calc(100vw - 80px)',
+].join(', ');
+
 export default function AboutSection() {
   return (
     <section id={'about'} className={'bg-background py-20'}>
@@ -72,7 +81,7 @@ export default function AboutSection() {
                     'aspect-[3/2] h-auto w-full object-cover transition-transform duration-500',
                     'hover:scale-105 lg:aspect-auto lg:h-full',
                   ].join(' ')}
-                  sizes={'(max-width: 1024px) 100vw, 50vw'}
+                  sizes={imageSizes}
                 />
               </div>
             </article>

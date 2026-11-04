@@ -20,6 +20,8 @@ const h2Variants = tv({
     variant: {
       section: 'text-center text-3xl font-normal lg:text-5xl',
       card: 'text-center text-3xl font-medium lg:mb-12 lg:text-5xl',
+      footer: 'text-xl font-bold',
+      footerLarge: 'text-2xl font-bold',
     },
   },
 });
@@ -28,8 +30,6 @@ const h3Variants = tv({
   base: 'scroll-m-20 tracking-tight',
   variants: {
     variant: {
-      footer: 'text-xl font-bold',
-      footerLarge: 'text-2xl font-bold',
       card: 'text-2xl font-normal lg:text-3xl',
     },
   },

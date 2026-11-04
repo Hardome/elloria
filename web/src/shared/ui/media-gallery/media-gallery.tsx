@@ -14,10 +14,11 @@ const DialogMediaSlider = dynamic(() => import('@/shared/ui/media-slider'), { ss
 
 interface MediaGalleryProps {
   images: { src: string; alt: string }[];
+  sizes: string;
   onReady?: () => void;
 }
 
-const MediaGallery = ({ images, onReady }: MediaGalleryProps) => {
+const MediaGallery = ({ images, sizes, onReady }: MediaGalleryProps) => {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -54,7 +55,7 @@ const MediaGallery = ({ images, onReady }: MediaGalleryProps) => {
                 src={image.src}
                 alt={image.alt || ''}
                 fill={true}
-                sizes={'(max-width: 768px) 100vw, 50vw'}
+                sizes={sizes}
                 className={'object-cover select-none'}
               />
             </button>
