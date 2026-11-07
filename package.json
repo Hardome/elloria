@@ -12,7 +12,7 @@
     "dev": "pnpm --parallel --filter @elloria/api --filter @elloria/web run dev",
     "codegen": "pnpm --filter @elloria/api run codegen",
     "build": "pnpm --filter @elloria/api run build && pnpm --filter @elloria/web run build",
-    "check": "pnpm run spellcheck && pnpm --filter @elloria/api run check && pnpm --filter @elloria/web run lint && pnpm --filter @elloria/web run typecheck && pnpm --filter @elloria/web run build",
+    "check": "pnpm run spellcheck && pnpm --filter @elloria/api run check && pnpm --filter @elloria/web run lint && pnpm --filter @elloria/web run typecheck && pnpm --filter @elloria/web run test && pnpm --filter @elloria/web run build",
     "db:up": "docker compose up -d --wait database",
     "db:setup": "pnpm run db:up && pnpm run db:migrate",
     "db:down": "docker compose down",

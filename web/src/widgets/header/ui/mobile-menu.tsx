@@ -22,6 +22,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
     const previousOverflow = document.body.style.overflow;
     const desktop = window.matchMedia('(min-width: 1024px)');
+
     const closeOnDesktop = () => {
       if (desktop.matches) {
         onClose();
@@ -30,6 +31,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
     document.body.style.overflow = 'hidden';
     desktop.addEventListener('change', closeOnDesktop);
+
     closeOnDesktop();
 
     return () => {

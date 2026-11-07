@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import type { Swiper as SwiperType } from 'swiper';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -21,15 +22,26 @@ interface MediaGalleryProps {
 const MediaGallery = ({ images, sizes, onReady }: MediaGalleryProps) => {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
+  const swiperRef = useRef<SwiperType | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    const swiper = swiperRef.current;
+    if (swiper && !swiper.destroyed && swiper.activeIndex !== active) {
+      swiper.slideTo(active);
+    }
+  }, [active]);
 
   return (
     <React.Fragment>
-      {/* inline slider */}
       <Swiper
         modules={[Navigation]}
         navigation={true}
         onSlideChange={(s) => setActive(s.activeIndex)}
-        onSwiper={onReady}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+          onReady?.();
+        }}
         className={'h-full w-full overflow-hidden rounded-xl'}
         style={
           {
@@ -46,7 +58,8 @@ const MediaGallery = ({ images, sizes, onReady }: MediaGalleryProps) => {
                 'focus-visible:outline-offset-[-4px] focus-visible:outline-primary',
               ].join(' ')}
               aria-label={`Открыть изображение: ${image.alt}`}
-              onClick={() => {
+              onClick={(evt) => {
+                openerRef.current = evt.currentTarget;
                 setActive(i);
                 setOpen(true);
               }}
@@ -67,7 +80,11 @@ const MediaGallery = ({ images, sizes, onReady }: MediaGalleryProps) => {
           images={images}
           currentIndex={active}
           onClose={() => setOpen(false)}
-          onThumbnailClick={setActive}
+          onIndexChange={setActive}
+          onCloseAutoFocus={(evt) => {
+            evt.preventDefault();
+            openerRef.current?.focus({ preventScroll: true });
+          }}
         />
       )}
     </React.Fragment>

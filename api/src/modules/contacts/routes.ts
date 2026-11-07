@@ -19,11 +19,15 @@ export function registerContactRoutes(app: FastifyInstance, repository: ContactR
       name: body.name.trim(),
       phone: body.phone.trim(),
     });
+
     return reply.code(201).send(toContact(contact));
   };
 
   typedApp.post('/contacts', {
-    schema: { body: zCreateContactBody, response: { 201: zCreateContactResponse, 400: zApiError, 429: zApiError } },
+    schema: {
+      body: zCreateContactBody.strict(),
+      response: { 201: zCreateContactResponse, 400: zApiError, 429: zApiError },
+    },
     handler: createContact,
   });
 

@@ -67,24 +67,29 @@ type LeadProps = React.HTMLAttributes<HTMLParagraphElement> & VariantProps<typeo
 export const H1 = forwardRef<HTMLHeadingElement, H1Props>(({ className, variant, ...props }, ref) => (
   <h1 ref={ref} className={h1Variants({ variant, className })} {...props} />
 ));
+
 H1.displayName = 'H1';
 
 export const H2 = forwardRef<HTMLHeadingElement, H2Props>(({ className, variant, ...props }, ref) => (
   <h2 ref={ref} className={h2Variants({ variant, className })} {...props} />
 ));
+
 H2.displayName = 'H2';
 
 export const H3 = forwardRef<HTMLHeadingElement, H3Props>(({ className, variant, ...props }, ref) => (
   <h3 ref={ref} className={h3Variants({ variant, className })} {...props} />
 ));
+
 H3.displayName = 'H3';
 
 export const Lead = forwardRef<HTMLParagraphElement, LeadProps>(({ className, variant, ...props }, ref) => (
   <p ref={ref} className={leadVariants({ variant, className })} {...props} />
 ));
+
 Lead.displayName = 'Lead';
 
 export const P = forwardRef<HTMLParagraphElement, PProps>(({ className, variant, ...props }, ref) => (
   <p ref={ref} className={pVariants({ variant, className })} {...props} />
 ));
+
 P.displayName = 'P';

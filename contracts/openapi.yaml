@@ -123,6 +123,7 @@ components:
   schemas:
     CreateContact:
       type: object
+      additionalProperties: false
       required: [ name, phone ]
       properties:
         name:

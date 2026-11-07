@@ -12,6 +12,7 @@ describe('Заявки', () => {
   let app: FastifyInstance;
   const ids: number[] = [];
   const payload = { name: 'Иван', phone: '+7 (999) 123-45-67' };
+
   beforeAll(async () => {
     app = await buildApp({
       environment: parseEnvironment({
@@ -23,16 +24,18 @@ describe('Заявки', () => {
       }),
     });
   });
+
   afterAll(async () => {
     if (ids.length > 0) await app.db.delete(contacts).where(inArray(contacts.id, ids));
     await app.close();
   });
+
   it('принимает запрос текущей формы и назначает дату', async () => {
     const start = Date.now();
     const response = await app.inject({
       method: 'POST',
       url: '/contacts',
-      payload: { ...payload, name: '  Иван  ', createdAt: '2000-01-01T00:00:00.000Z' },
+      payload: { ...payload, name: '  Иван  ' },
     });
     expect(response.statusCode).toBe(201);
     const contact = zContact.parse(response.json());
@@ -43,16 +46,20 @@ describe('Заявки', () => {
     expect(row?.name).toBe('Иван');
     expect(row?.createdAt.toISOString()).toBe(contact.createdAt);
   });
-  it('не возвращает удалённое поле источника', async () => {
-    const response = await app.inject({
-      method: 'POST',
-      url: '/contacts',
-      payload: { name: 'Анна', phone: payload.phone, from: 'Старый клиент' },
-    });
-    expect(response.statusCode).toBe(201);
-    ids.push(response.json().id);
-    expect(response.json()).not.toHaveProperty('from');
-  });
+
+  it.each([{ from: 'Старый клиент' }, { createdAt: '2000-01-01T00:00:00.000Z' }])(
+    'отклоняет лишние поля %j',
+    async (extra) => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/contacts',
+        payload: { ...payload, ...extra },
+      });
+      expect(response.statusCode).toBe(400);
+      expect(response.json()).toMatchObject({ code: 'invalid_request' });
+    },
+  );
+
   it.each([{ name: '' }, { name: '   ' }, { name: 'x'.repeat(256) }, { phone: '89991234567' }, { phone: null }])(
     'отклоняет неверную заявку %j',
     async (invalid) => {
@@ -64,6 +71,7 @@ describe('Заявки', () => {
       });
     },
   );
+
   it('обрабатывает повреждённый JSON и неверный Content-Type', async () => {
     const malformed = await app.inject({
       method: 'POST',
@@ -82,6 +90,7 @@ describe('Заявки', () => {
     expect(unsupported.statusCode).toBe(415);
     expect(unsupported.json().code).toBe('unsupported_media_type');
   });
+
   it('отклоняет слишком большое тело запроса', async () => {
     const response = await app.inject({
       method: 'POST',
@@ -97,6 +106,7 @@ describe('Заявки', () => {
     expect(response.statusCode).toBe(401);
     expect(response.json().code).toBe('unauthenticated');
   });
+
   it('выгружает больше одной порции и возвращает корректный XLSX', async () => {
     const inserted = await app.db
       .insert(contacts)
@@ -117,6 +127,7 @@ describe('Заявки', () => {
     expect(exported).toEqual([...ids].sort((a, b) => a - b));
     expect(sheet?.getRow(1).font.bold).toBe(true);
   });
+
   it('пустая таблица даёт XLSX с заголовками', async () => {
     await app.db.delete(contacts).where(inArray(contacts.id, ids));
     const response = await app.inject('/contacts/export?key=export-test-key');

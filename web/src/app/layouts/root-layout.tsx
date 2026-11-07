@@ -14,7 +14,7 @@ const cormorant = Cormorant({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-cormorant',
   preload: true,
-  // Показываем системный шрифт, пока загружается основной.
+  // Показываем системный шрифт, пока загружается основной
   display: 'swap',
 });
 

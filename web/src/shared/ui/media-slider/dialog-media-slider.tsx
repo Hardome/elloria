@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import type { ComponentProps } from 'react';
 
 import { X, ZoomIn, ZoomOut } from 'lucide-react';
 import Image from 'next/image';
-import type { Swiper as SwiperType } from 'swiper';
 import { Keyboard, Navigation, Thumbs, Zoom } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
+import { useDialogMediaSlider } from './use-dialog-media-slider';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -15,10 +16,6 @@ import 'swiper/css/zoom';
 
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/shared/ui/dialog';
-
-const ZOOM_STEPS = [1, 1.25, 1.5, 2, 2.5, 3] as const;
-const MIN_ZOOM = ZOOM_STEPS[0];
-const MAX_ZOOM = ZOOM_STEPS[ZOOM_STEPS.length - 1];
 
 interface ImageItem {
   src: string;
@@ -29,71 +26,34 @@ interface DialogMediaSliderProps {
   images: ImageItem[];
   currentIndex: number;
   onClose: () => void;
-  onThumbnailClick: (index: number) => void;
+  onIndexChange: (index: number) => void;
+  onCloseAutoFocus?: ComponentProps<typeof DialogContent>['onCloseAutoFocus'];
 }
 
-const DialogMediaSlider = ({ images, currentIndex, onClose, onThumbnailClick }: DialogMediaSliderProps) => {
-  const [thumbs, setThumbs] = useState<SwiperType | null>(null);
-  const [zoomScale, setZoomScale] = useState(1);
-  const mainSwiperRef = useRef<SwiperType | null>(null);
-
-  const zoomIn = () => {
-    const swiper = mainSwiperRef.current;
-
-    if (!swiper?.zoom?.enabled) {
-      return;
-    }
-
-    const next = ZOOM_STEPS.find((s) => s > zoomScale) ?? MAX_ZOOM;
-
-    if (next > zoomScale) {
-      swiper.zoom.in(next);
-    }
-  };
-
-  const zoomOut = () => {
-    const swiper = mainSwiperRef.current;
-
-    if (!swiper?.zoom?.enabled) {
-      return;
-    }
-
-    const prev = [...ZOOM_STEPS].reverse().find((s) => s < zoomScale) ?? MIN_ZOOM;
-
-    if (prev < zoomScale) {
-      if (prev === 1) {
-        swiper.zoom.out();
-      } else {
-        swiper.zoom.in(prev);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (mainSwiperRef.current && currentIndex >= 0 && currentIndex < images.length) {
-      mainSwiperRef.current.slideTo(currentIndex);
-    }
-  }, [currentIndex, images.length]);
-
-  const handleSlideChange = (swiper: SwiperType) => {
-    const newIndex = swiper.activeIndex;
-
-    onThumbnailClick(newIndex);
-  };
-
-  const handleSwiperInit = (swiper: SwiperType) => {
-    mainSwiperRef.current = swiper;
-    swiper.on('zoomChange', (_s, scale) => {
-      setZoomScale(scale);
-    });
-    swiper.on('slideChange', () => {
-      setZoomScale(1);
-    });
-  };
+const DialogMediaSlider = ({
+  images,
+  currentIndex,
+  onClose,
+  onIndexChange,
+  onCloseAutoFocus,
+}: DialogMediaSliderProps) => {
+  const {
+    thumbs,
+    setThumbs,
+    zoomScale,
+    handleZoomChange,
+    zoomIn,
+    zoomOut,
+    handleSlideChange,
+    handleSwiperInit,
+    minZoom,
+    maxZoom,
+  } = useDialogMediaSlider(currentIndex, images.length, onIndexChange);
 
   return (
     <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
+        onCloseAutoFocus={onCloseAutoFocus}
         className={[
           'inset-0 top-0 left-0 z-[1000] flex h-dvh w-full max-w-none translate-x-0',
           'translate-y-0 flex-col gap-0 rounded-none border-0 bg-black/90 p-0 sm:max-w-none',
@@ -115,7 +75,7 @@ const DialogMediaSlider = ({ images, currentIndex, onClose, onThumbnailClick }: 
               variant={'ghost'}
               size={'icon'}
               onClick={zoomOut}
-              disabled={zoomScale <= MIN_ZOOM}
+              disabled={zoomScale <= minZoom}
               className={'text-white'}
               aria-label={'Уменьшить'}
             >
@@ -125,7 +85,7 @@ const DialogMediaSlider = ({ images, currentIndex, onClose, onThumbnailClick }: 
               variant={'ghost'}
               size={'icon'}
               onClick={zoomIn}
-              disabled={zoomScale >= MAX_ZOOM}
+              disabled={zoomScale >= maxZoom}
               className={'text-white'}
               aria-label={'Увеличить'}
             >
@@ -144,13 +104,14 @@ const DialogMediaSlider = ({ images, currentIndex, onClose, onThumbnailClick }: 
             navigation={true}
             thumbs={{ swiper: thumbs }}
             zoom={{
-              maxRatio: MAX_ZOOM,
-              minRatio: MIN_ZOOM,
+              maxRatio: maxZoom,
+              minRatio: minZoom,
               panOnMouseMove: false,
             }}
             keyboard={true}
             initialSlide={currentIndex}
             onSwiper={handleSwiperInit}
+            onZoomChange={handleZoomChange}
             onSlideChange={handleSlideChange}
             className={'h-full'}
             style={
@@ -195,7 +156,7 @@ const DialogMediaSlider = ({ images, currentIndex, onClose, onThumbnailClick }: 
               >
                 <button
                   type={'button'}
-                  onClick={() => onThumbnailClick(index)}
+                  onClick={() => onIndexChange(index)}
                   aria-label={`Показать изображение ${index + 1}: ${item.alt}`}
                   aria-current={currentIndex === index ? 'true' : undefined}
                   className={[

@@ -1,7 +1,6 @@
 'use client';
 
-import type React from 'react';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 
 import { X } from 'lucide-react';
 import Link from 'next/link';
@@ -10,6 +9,8 @@ import { Button } from '@/shared/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
 import { Input } from '@/shared/ui/input';
 
+import { useContactForm } from './use-contact-form';
+
 interface ContactDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -17,96 +18,26 @@ interface ContactDialogProps {
 
 const ContactDialog = ({ isOpen, onClose }: ContactDialogProps) => {
   const formId = useId();
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [hasConsent, setHasConsent] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitState, setSubmitState] = useState<'idle' | 'success' | 'error'>('idle');
-
-  const handleClose = () => {
-    setPhone('');
-    setName('');
-    setHasConsent(false);
-    setSubmitState('idle');
-    onClose();
-  };
-
-  const handleSubmit = async (evt: React.FormEvent) => {
-    evt.preventDefault();
-
-    if (!hasConsent) {
-      return;
-    }
-
-    setSubmitState('idle');
-    setIsLoading(true);
-
-    try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api';
-
-      const response = await fetch(`${backendUrl}/contacts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          phone,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Ошибка при отправке формы');
-      }
-
-      setSubmitState('success');
-    } catch (err) {
-      setSubmitState('error');
-      // eslint-disable-next-line no-console
-      console.error('Error submitting form:', JSON.stringify(err));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handlePhoneChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = evt.target.value;
-    const digits = rawValue.replace(/\D/g, '');
-
-    if (!digits) {
-      setPhone('');
-
-      return;
-    }
-
-    const hasCountryCode =
-      rawValue.trimStart().startsWith('+7') || ((digits.length === 1 || digits.length === 11) && /^[78]/.test(digits));
-    const localDigits = (hasCountryCode ? digits.slice(1) : digits).slice(0, 10);
-
-    let formatted = `+7`;
-
-    if (localDigits.length > 0) {
-      formatted += ` (${localDigits.slice(0, 3)}`;
-    }
-    if (localDigits.length > 3) {
-      formatted += `) ${localDigits.slice(3, 6)}`;
-    }
-    if (localDigits.length > 6) {
-      formatted += `-${localDigits.slice(6, 8)}`;
-    }
-    if (localDigits.length > 8) {
-      formatted += `-${localDigits.slice(8, 10)}`;
-    }
-
-    setPhone(formatted);
-  };
+  const {
+    name,
+    nameError,
+    handleNameChange,
+    phone,
+    hasConsent,
+    setHasConsent,
+    isLoading,
+    submitState,
+    handleClose,
+    handleSubmit,
+    handlePhoneChange,
+  } = useContactForm(onClose);
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className={'max-h-[calc(100dvh-2rem)] overflow-y-auto p-4 sm:p-6'}>
         <DialogHeader>
           <div className={'flex items-center justify-between gap-2'}>
-            <DialogTitle className={'text-2xl font-medium whitespace-nowrap sm:text-3xl'}>
+            <DialogTitle className={'min-w-0 text-2xl font-medium sm:text-3xl'}>
               {submitState === 'success' ? 'Заявка отправлена' : 'Оставьте номер телефона'}
             </DialogTitle>
             <DialogClose asChild={true}>
@@ -141,12 +72,20 @@ const ContactDialog = ({ isOpen, onClose }: ContactDialogProps) => {
               type={'text'}
               value={name}
               required={true}
+              maxLength={255}
+              aria-invalid={nameError !== null}
+              aria-describedby={nameError ? `${formId}-name-error` : undefined}
               disabled={isLoading}
               className={'rounded-lg'}
-              onChange={(evt) => setName(evt.target.value)}
+              onChange={handleNameChange}
               placeholder={'Имя'}
               title={'Укажите своё имя'}
             />
+            {nameError && (
+              <p id={`${formId}-name-error`} role={'alert'} className={'text-sm text-destructive'}>
+                {nameError}
+              </p>
+            )}
             <label htmlFor={`${formId}-phone`} className={'sr-only'}>
               {'Телефон'}
             </label>

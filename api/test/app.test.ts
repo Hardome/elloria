@@ -16,9 +16,11 @@ const environment = () =>
 
 describe('Приложение', () => {
   let app: FastifyInstance;
+
   beforeAll(async () => {
     app = await buildApp({ environment: environment() });
   });
+
   afterAll(async () => {
     await app.close();
   });
@@ -29,6 +31,7 @@ describe('Приложение', () => {
     expect((await app.inject('/health/ready')).json()).toEqual({ status: 'ready' });
     expect((await app.inject('/documentation/json')).json()).toMatchObject({ openapi: '3.1.0' });
   });
+
   it('разрешает CORS только для настроенного сайта', async () => {
     const allowed = await app.inject({
       url: '/contacts',
@@ -40,11 +43,13 @@ describe('Приложение', () => {
     expect(denied.headers['access-control-allow-origin']).toBeUndefined();
     expect(denied.headers['x-content-type-options']).toBe('nosniff');
   });
+
   it('возвращает единый формат для неизвестного маршрута', async () => {
     const response = await app.inject('/unknown?key=secret');
     expect(response.statusCode).toBe(404);
     expect(response.json()).toMatchObject({ code: 'not_found', message: expect.any(String) });
   });
+
   it('ограничивает частоту запросов и исключает health из лимита', async () => {
     const limited = await buildApp({ environment: { ...environment(), RATE_LIMIT_MAX: 1 } });
     try {
@@ -57,6 +62,7 @@ describe('Приложение', () => {
       await limited.close();
     }
   });
+
   it('readiness возвращает 503 без БД, liveness продолжает работать', async () => {
     const offline = await buildApp({
       environment: { ...environment(), DATABASE_URL: 'postgresql://postgres:invalid@127.0.0.1:1/offline' },
@@ -81,6 +87,7 @@ describe('Приложение', () => {
       await offline.close();
     }
   });
+
   it('readiness возвращает 503 при отсутствующей таблице', async () => {
     const databaseUrl = new URL(environment().DATABASE_URL);
     databaseUrl.searchParams.set('options', '-c search_path=pg_catalog');
