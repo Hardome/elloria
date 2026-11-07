@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -27,6 +27,7 @@ const imageSizes = [
 
 const MediaGalleryGrid = ({ mediaItems }: MediaGalleryGridProps) => {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -43,7 +44,10 @@ const MediaGalleryGrid = ({ mediaItems }: MediaGalleryGridProps) => {
               'transition-all duration-300 hover:shadow-medium focus-visible:outline-2',
               'focus-visible:outline-offset-2 focus-visible:outline-primary',
             ].join(' ')}
-            onClick={() => openLightbox(index)}
+            onClick={(evt) => {
+              openerRef.current = evt.currentTarget;
+              openLightbox(index);
+            }}
             aria-label={`Открыть изображение: ${item.alt}`}
           >
             <Image
@@ -58,12 +62,14 @@ const MediaGalleryGrid = ({ mediaItems }: MediaGalleryGridProps) => {
       </div>
       {lightboxIndex !== null && (
         <DialogMediaSlider
-          images={mediaItems.map((item) => {
-            return { src: item.src, alt: item.alt };
-          })}
+          images={mediaItems}
           currentIndex={lightboxIndex}
           onClose={closeLightbox}
-          onThumbnailClick={openLightbox}
+          onIndexChange={openLightbox}
+          onCloseAutoFocus={(evt) => {
+            evt.preventDefault();
+            openerRef.current?.focus({ preventScroll: true });
+          }}
         />
       )}
     </Fragment>

@@ -14,12 +14,15 @@ export class ContactRepository {
 
   async create(input: CreateContact): Promise<ContactRow> {
     const [contact] = await this.#database.insert(contacts).values(input).returning();
+
     if (!contact) throw new Error('Не удалось сохранить заявку');
+
     return contact;
   }
 
   async exportUpperBound(): Promise<number> {
     const [row] = await this.#database.select({ id: sql<number>`coalesce(max(${contacts.id}), 0)` }).from(contacts);
+
     return row?.id ?? 0;
   }
 

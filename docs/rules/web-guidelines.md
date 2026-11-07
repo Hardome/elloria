@@ -1,7 +1,6 @@
 # Разработка Web
 
 Web использует Next.js App Router, React, TypeScript и Tailwind CSS.
-Код организован по FSD, по образцу [Stageby](https://github.com/Hardome/stageby).
 Маршруты Next.js отделены от слоёв приложения:
 
 | Каталог | Назначение |
@@ -31,8 +30,6 @@ Web использует Next.js App Router, React, TypeScript и Tailwind CSS.
 в `widgets` и `entities` выносите блоки и предметные объекты при повторном использовании.
 
 Границы и публичные API проверяет [Steiger](../../web/steiger.config.ts).
-Как в Stageby, отключено только требование нескольких потребителей среза:
-самостоятельный сценарий или страница могут иметь одну точку подключения.
 Соблюдайте настройки Biome и ESLint. Форматирование и сортировку импортов выполняет
 Biome; команды проверок описаны в [Web README](../../web/README.md#проверки).
 
@@ -72,9 +69,10 @@ Biome; команды проверок описаны в [Web README](../../web/
 ```sh
 pnpm --filter @elloria/web run lint
 pnpm --filter @elloria/web run typecheck
+pnpm --filter @elloria/web run test
 pnpm --filter @elloria/web run build
 ```
 
 Проверьте изменённые сценарии по [ручному регрессу](../guides/regression.md).
-Автоматического набора Web-тестов сейчас нет. При появлении сложной логики покрывайте
+Команда тестов описана в [Web README](../../web/README.md#проверки). Покрывайте
 существенный пользовательский риск, не дублируйте реализацию тестами каждого компонента.

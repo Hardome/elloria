@@ -15,6 +15,7 @@ describe('Настройки окружения', () => {
     expect(environment.CORS_ORIGIN).toEqual(['http://localhost:3000', 'https://elloria.ru']);
     expect(environment.TRUST_PROXY).toEqual(['172.30.0.0/24']);
   });
+
   it.each([
     { DATABASE_URL: 'https://localhost' },
     { EXPORT_KEY: '' },

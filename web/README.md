@@ -44,7 +44,10 @@ ESLint ограничивает строки кода 120 символами. Д
 ```sh
 pnpm --filter @elloria/web run lint
 pnpm --filter @elloria/web run typecheck
+pnpm --filter @elloria/web run test
 pnpm --filter @elloria/web run build
 ```
+
+Корневая команда `check` включает Web-тесты. Новые тесты пишите в `*.test.ts` и `*.test.tsx`.
 
 Общая проверка приложения: `pnpm run check`.

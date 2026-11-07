@@ -30,6 +30,7 @@ function getStatusCode(error: unknown): number {
 function getMessage(error: unknown, status: number): string {
   if (status === 429) return 'Превышен лимит запросов';
   if (status >= 500) return 'Внутренняя ошибка сервера';
+
   return error instanceof Error ? error.message : 'Некорректный запрос';
 }
 
